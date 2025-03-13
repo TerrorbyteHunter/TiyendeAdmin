@@ -8,6 +8,7 @@ import {
 } from "@shared/schema";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
+import { createDatabaseBackup, listBackups } from './backup';
 
 // JWT Secret (in production, this would be an environment variable)
 const JWT_SECRET = "tiyende-super-secret-key";
@@ -486,8 +487,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Backup management routes
-  import { createDatabaseBackup, listBackups } from './backup';
-
   app.post(`${api}/backups`, authenticateToken, requireAdmin, async (req, res) => {
     try {
       const backupPath = await createDatabaseBackup();
