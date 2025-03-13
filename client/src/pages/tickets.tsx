@@ -1,11 +1,12 @@
+
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import TicketList from "@/components/tickets/ticket-list";
+import { TicketList } from "@/components/tickets/ticket-list";
 
 export default function Tickets() {
-  const [selectedVendor, setSelectedVendor] = useState<string>("");
-  const [selectedRoute, setSelectedRoute] = useState<string>("");
+  const [selectedVendor, setSelectedVendor] = useState<number | undefined>(undefined);
+  const [selectedRoute, setSelectedRoute] = useState<number | undefined>(undefined);
 
   return (
     <div>
@@ -15,7 +16,7 @@ export default function Tickets() {
 
       <div className="mb-6 flex flex-col md:flex-row gap-4">
         <div className="flex-1">
-          <Select onValueChange={(value) => setSelectedVendor(value)}>
+          <Select onValueChange={(value) => setSelectedVendor(value === "all" ? undefined : Number(value))}>
             <SelectTrigger>
               <SelectValue placeholder="Select vendor" />
             </SelectTrigger>
@@ -26,7 +27,7 @@ export default function Tickets() {
           </Select>
         </div>
         <div className="flex-1">
-          <Select onValueChange={(value) => setSelectedRoute(value)}>
+          <Select onValueChange={(value) => setSelectedRoute(value === "all" ? undefined : Number(value))}>
             <SelectTrigger>
               <SelectValue placeholder="Select route" />
             </SelectTrigger>
@@ -47,19 +48,19 @@ export default function Tickets() {
             <TabsTrigger value="refunded">Refunded</TabsTrigger>
           </TabsList>
         </div>
-
+        
         <TabsContent value="all" className="pt-4 mt-0">
           <TicketList vendorId={selectedVendor} routeId={selectedRoute} />
         </TabsContent>
-
+        
         <TabsContent value="paid" className="pt-4 mt-0">
           <TicketList vendorId={selectedVendor} routeId={selectedRoute} />
         </TabsContent>
-
+        
         <TabsContent value="pending" className="pt-4 mt-0">
           <TicketList vendorId={selectedVendor} routeId={selectedRoute} />
         </TabsContent>
-
+        
         <TabsContent value="refunded" className="pt-4 mt-0">
           <TicketList vendorId={selectedVendor} routeId={selectedRoute} />
         </TabsContent>
