@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useLocation, useNavigate } from "wouter";
+import { useLocation, useSearchParams } from "wouter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,12 +12,11 @@ import { VendorForm } from "@/components/vendors/vendor-form";
 import type { User, Vendor } from "@shared/schema";
 
 export default function Management() {
-  const [location] = useLocation();
-  const navigate = useNavigate();
-  const searchParams = new URLSearchParams(location.split('?')[1] || '');
+  const [location, setLocation] = useLocation();
+  const [searchParams] = useSearchParams();
   const tabFromUrl = searchParams.get('tab') as "users" | "vendors" | null;
   const [activeTab, setActiveTab] = useState<"users" | "vendors">(tabFromUrl || "users");
-  
+
   useEffect(() => {
     if (tabFromUrl && (tabFromUrl === "users" || tabFromUrl === "vendors")) {
       setActiveTab(tabFromUrl);
@@ -49,6 +47,13 @@ export default function Management() {
     setEditingVendor(null);
   };
 
+  const handleTabChange = (value: "users" | "vendors") => {
+    setActiveTab(value);
+    const params = new URLSearchParams(searchParams.toString() || '');
+    params.set('tab', value);
+    setLocation(`/management?${params.toString()}`);
+  };
+
   return (
     <div className="space-y-6">
       <div>
@@ -59,10 +64,7 @@ export default function Management() {
       <Tabs 
         defaultValue="users" 
         value={activeTab} 
-        onValueChange={(value) => {
-          setActiveTab(value as "users" | "vendors");
-          navigate(`/management?tab=${value}`);
-        }}
+        onValueChange={handleTabChange}
         className="space-y-4"
       >
         <TabsList>
