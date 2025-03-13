@@ -2,6 +2,7 @@ import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import jwt from 'jsonwebtoken';
+import { createSession, validateSession, endSession, refreshSession } from './session';
 import {
   loginSchema, insertUserSchema, insertVendorSchema, 
   insertRouteSchema, insertTicketSchema, insertActivitySchema
