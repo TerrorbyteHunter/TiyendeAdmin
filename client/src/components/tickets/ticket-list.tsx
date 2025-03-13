@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { format } from "date-fns";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { MoreHorizontal } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import type { Ticket } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
