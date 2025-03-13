@@ -68,7 +68,7 @@ export class MemStorage implements IStorage {
   private vendors: Map<number, Vendor>;
   private routes: Map<number, Route>;
   private tickets: Map<number, Ticket>;
-  private settings: Map<string, Setting>;
+  private settings: Map<number, Setting>;
   private activities: Activity[];
   
   private userId: number = 1;
@@ -238,7 +238,7 @@ export class MemStorage implements IStorage {
     return this.users.delete(id);
   }
   
-  async setUserToken(id: number, token: string): Promise<boolean> {
+  async setUserToken(id: number, token: string | null): Promise<boolean> {
     const user = this.users.get(id);
     if (!user) return false;
     
@@ -314,7 +314,14 @@ export class MemStorage implements IStorage {
   
   async createRoute(route: InsertRoute): Promise<Route> {
     const id = this.routeId++;
-    const newRoute: Route = { ...route, id, createdAt: new Date() };
+    const newRoute: Route = { 
+      ...route, 
+      id, 
+      createdAt: new Date(),
+      status: route.status || "active",
+      estimatedArrival: route.estimatedArrival || null,
+      capacity: route.capacity || 44
+    };
     this.routes.set(id, newRoute);
     
     // Log activity
@@ -386,7 +393,15 @@ export class MemStorage implements IStorage {
   
   async createTicket(ticket: InsertTicket): Promise<Ticket> {
     const id = this.ticketId++;
-    const newTicket: Ticket = { ...ticket, id, bookingDate: new Date() };
+    const newTicket: Ticket = { 
+      ...ticket, 
+      id, 
+      bookingDate: new Date(),
+      status: ticket.status || "pending",
+      customerEmail: ticket.customerEmail || null,
+      paymentMethod: ticket.paymentMethod || null,
+      paymentReference: ticket.paymentReference || null
+    };
     this.tickets.set(id, newTicket);
     
     // Log activity
@@ -454,6 +469,7 @@ export class MemStorage implements IStorage {
       this.settings.set(setting.id, setting);
     } else {
       const id = this.settingId++;
+      // Convert the numeric id to string for the Map key
       setting = {
         id,
         name,
@@ -485,7 +501,9 @@ export class MemStorage implements IStorage {
     const newActivity: Activity = { 
       ...activity, 
       id, 
-      timestamp: new Date() 
+      timestamp: new Date(),
+      userId: activity.userId || null,
+      details: activity.details || {}
     };
     
     this.activities.push(newActivity);
