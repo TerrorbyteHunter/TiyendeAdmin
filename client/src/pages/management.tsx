@@ -13,14 +13,13 @@ import type { User, Vendor } from "@shared/schema";
 
 export default function Management() {
   const [location, setLocation] = useLocation();
-  
-  // Parse search params manually from location
+
+  // Parse search params manually from location.  This is more robust than the previous method.
   const getSearchParams = () => {
-    const parts = location.split('?');
-    if (parts.length <= 1) return new URLSearchParams();
-    return new URLSearchParams(parts[1]);
+    const url = new URL(location, 'http://example.com'); // Use a dummy base URL for parsing
+    return new URLSearchParams(url.search);
   };
-  
+
   const searchParams = getSearchParams();
   const tabFromUrl = searchParams.get('tab') as "users" | "vendors" | null;
   const [activeTab, setActiveTab] = useState<"users" | "vendors">(tabFromUrl || "users");
@@ -57,7 +56,7 @@ export default function Management() {
 
   const handleTabChange = (value: "users" | "vendors") => {
     setActiveTab(value);
-    const params = getSearchParams();
+    const params = new URLSearchParams();
     params.set('tab', value);
     setLocation(`/management?${params.toString()}`);
   };
