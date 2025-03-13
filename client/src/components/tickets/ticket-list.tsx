@@ -430,3 +430,97 @@ export function TicketList({ vendorId, routeId }: TicketListProps) {
     </Card>
   );
 }
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
+import { Edit, Trash2, Eye } from "lucide-react";
+import type { Ticket } from "@shared/schema";
+
+interface TicketListProps {
+  tickets: Ticket[];
+}
+
+const TicketStatusBadge = ({ status }: { status: Ticket["status"] }) => {
+  switch (status) {
+    case "paid":
+      return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Paid</Badge>;
+    case "pending":
+      return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">Pending</Badge>;
+    case "refunded":
+      return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">Refunded</Badge>;
+    case "cancelled":
+      return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">Cancelled</Badge>;
+    default:
+      return null;
+  }
+};
+
+export function TicketList({ tickets }: TicketListProps) {
+  const formatDate = (dateString: string) => {
+    try {
+      return format(new Date(dateString), 'MMM dd, yyyy');
+    } catch (e) {
+      return dateString;
+    }
+  };
+
+  return (
+    <div className="rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Reference</TableHead>
+            <TableHead>Customer</TableHead>
+            <TableHead>Route</TableHead>
+            <TableHead>Date</TableHead>
+            <TableHead>Amount</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {tickets.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={7} className="h-24 text-center">
+                No tickets found.
+              </TableCell>
+            </TableRow>
+          ) : (
+            tickets.map((ticket) => (
+              <TableRow key={ticket.id}>
+                <TableCell className="font-medium">{ticket.bookingReference}</TableCell>
+                <TableCell>
+                  <div className="font-medium">{ticket.customerName}</div>
+                  <div className="text-sm text-gray-500">{ticket.customerPhone}</div>
+                </TableCell>
+                <TableCell>
+                  {/* We would need to fetch route details to display here */}
+                  {ticket.routeId}
+                </TableCell>
+                <TableCell>{formatDate(ticket.travelDate)}</TableCell>
+                <TableCell>K{(ticket.amount / 100).toFixed(2)}</TableCell>
+                <TableCell>
+                  <TicketStatusBadge status={ticket.status} />
+                </TableCell>
+                <TableCell>
+                  <div className="flex space-x-1">
+                    <Button variant="ghost" size="icon">
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                    <Button variant="ghost" size="icon">
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button variant="ghost" size="icon">
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
