@@ -212,16 +212,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.status(204).send();
   });
 
-  // Vendor routes
+  // Vendor routes - Only admin users can manage vendors
   app.get(`${api}/vendors`, authenticateToken, async (req, res) => {
+    // Anyone logged in can view vendors
     const vendors = await storage.listVendors();
     res.json(vendors);
   });
 
-  app.post(`${api}/vendors`, authenticateToken, async (req, res) => {
+  app.post(`${api}/vendors`, authenticateToken, requireAdmin, async (req, res) => {
+    // Only admins can create vendors
     try {
       const vendorData = insertVendorSchema.parse(req.body);
       const vendor = await storage.createVendor(vendorData);
+
+      // Log the activity
+      await storage.createActivity({
+        userId: (req as any).user.id,
+        action: "Created new vendor",
+        details: { vendorName: vendorData.name }
+      });
+
       res.status(201).json(vendor);
     } catch (err) {
       res.status(400).json({ message: handleValidationError(err) });
@@ -229,6 +239,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.get(`${api}/vendors/:id`, authenticateToken, async (req, res) => {
+    // Anyone logged in can view vendor details
     const id = parseInt(req.params.id);
     if (isNaN(id)) {
       return res.status(400).json({ message: "Invalid vendor ID" });
@@ -242,7 +253,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json(vendor);
   });
 
-  app.patch(`${api}/vendors/:id`, authenticateToken, async (req, res) => {
+  app.patch(`${api}/vendors/:id`, authenticateToken, requireAdmin, async (req, res) => {
+    // Only admins can update vendors
     const id = parseInt(req.params.id);
     if (isNaN(id)) {
       return res.status(400).json({ message: "Invalid vendor ID" });
@@ -257,22 +269,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Vendor not found" });
       }
 
+      // Log the activity
+      await storage.createActivity({
+        userId: (req as any).user.id,
+        action: "Updated vendor",
+        details: { vendorId: id, vendorName: vendor.name }
+      });
+
       res.json(vendor);
     } catch (err) {
       res.status(400).json({ message: handleValidationError(err) });
     }
   });
 
-  app.delete(`${api}/vendors/:id`, authenticateToken, async (req, res) => {
+  app.delete(`${api}/vendors/:id`, authenticateToken, requireAdmin, async (req, res) => {
+    // Only admins can delete vendors
     const id = parseInt(req.params.id);
     if (isNaN(id)) {
       return res.status(400).json({ message: "Invalid vendor ID" });
+    }
+
+    // Get vendor name before deletion for activity log
+    const vendor = await storage.getVendor(id);
+    if (!vendor) {
+      return res.status(404).json({ message: "Vendor not found" });
     }
 
     const deleted = await storage.deleteVendor(id);
     if (!deleted) {
       return res.status(404).json({ message: "Vendor not found" });
     }
+
+    // Log the activity
+    await storage.createActivity({
+      userId: (req as any).user.id,
+      action: "Deleted vendor",
+      details: { vendorId: id, vendorName: vendor.name }
+    });
 
     res.status(204).send();
   });
