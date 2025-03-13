@@ -88,11 +88,31 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       console.log("Sending login request with data:", data);
       
-      const response = await apiRequest("POST", "/api/auth/login", data);
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        credentials: "include"
+      });
+      
       console.log("Login response status:", response.status);
       
-      const result = await response.json();
-      console.log("Login response:", result);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Login error text:", errorText);
+        throw new Error(errorText || "Failed to log in");
+      }
+      
+      // Safely parse JSON
+      let result;
+      try {
+        const text = await response.text();
+        result = JSON.parse(text);
+        console.log("Login response:", result);
+      } catch (parseError) {
+        console.error("JSON parse error:", parseError);
+        throw new Error("Invalid response format from server");
+      }
       
       // Store token and user data
       localStorage.setItem("authToken", result.token);
@@ -113,7 +133,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const logout = async () => {
     try {
       // Call logout endpoint to invalidate token on server
-      await apiRequest("POST", "/api/auth/logout", {});
+      await apiRequest("POST", "/api/logout", {});
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
