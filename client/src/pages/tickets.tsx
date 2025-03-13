@@ -79,6 +79,22 @@ export default function Tickets() {
               <TabsTrigger value="pending">Pending</TabsTrigger>
               <TabsTrigger value="refunded">Refunded</TabsTrigger>
             </TabsList>
+            
+            <TabsContent value="all" className="pt-4 mt-0">
+              <TicketList vendorId={selectedVendor} routeId={selectedRoute} />
+            </TabsContent>
+            
+            <TabsContent value="paid" className="pt-4 mt-0">
+              <TicketList vendorId={selectedVendor} routeId={selectedRoute} />
+            </TabsContent>
+            
+            <TabsContent value="pending" className="pt-4 mt-0">
+              <TicketList vendorId={selectedVendor} routeId={selectedRoute} />
+            </TabsContent>
+            
+            <TabsContent value="refunded" className="pt-4 mt-0">
+              <TicketList vendorId={selectedVendor} routeId={selectedRoute} />
+            </TabsContent>
           </Tabs>
         </div>
         
@@ -123,22 +139,7 @@ export default function Tickets() {
             </SelectContent>
           </Select>
         </div>
-      </div>
-      
-      <TabsContent value="all" className="pt-4 mt-0">
-        <TicketList vendorId={selectedVendor} routeId={selectedRoute} />
-      </TabsContent>
-      
-      <TabsContent value="paid" className="pt-4 mt-0">
-        <TicketList vendorId={selectedVendor} routeId={selectedRoute} />
-      </TabsContent>
-      
-      <TabsContent value="pending" className="pt-4 mt-0">
-        <TicketList vendorId={selectedVendor} routeId={selectedRoute} />
-      </TabsContent>
-      
-      <TabsContent value="refunded" className="pt-4 mt-0">
-        <TicketList vendorId={selectedVendor} routeId={selectedRoute} />
+      </div> />
       </TabsContent>
     </div>
   );
