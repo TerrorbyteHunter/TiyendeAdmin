@@ -15,8 +15,10 @@ import { Sidebar } from "@/components/shared/sidebar";
 import { Header } from "@/components/shared/header";
 import { MobileSidebar } from "@/components/shared/mobile-sidebar";
 import { useState, useEffect } from "react";
-import { SessionTimeout } from "@/components/shared/session-timeout"; // Added import
-import Management from "@/pages/management"; // Added import
+import { SessionTimeout } from "@/components/shared/session-timeout";
+import Management from "@/pages/management";
+import Users from "@/pages/users"; // Added import
+
 
 function ProtectedRoute({ component: Component, ...rest }: { component: React.ComponentType<any>, [key: string]: any }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -56,7 +58,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
         <Header onMenuClick={() => setIsMobileMenuOpen(true)} />
         <div className="flex-1 overflow-y-auto bg-gray-50 p-6 custom-scrollbar">
           {children}
-          <SessionTimeout /> {/* Added SessionTimeout component */}
+          <SessionTimeout />
         </div>
       </main>
     </div>
@@ -86,6 +88,9 @@ function Router() {
       <Route path="/management">
         <ProtectedRoute component={Management} />
       </Route>
+      <Route path="/users">
+        <ProtectedRoute component={Users} />
+      </Route> {/* Added Users route */}
       <Route path="/settings">
         <ProtectedRoute component={Settings} />
       </Route>
