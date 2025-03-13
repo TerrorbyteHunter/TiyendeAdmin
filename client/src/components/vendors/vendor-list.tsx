@@ -27,7 +27,8 @@ import {
   Trash, 
   CheckCircle, 
   XCircle,
-  Clock 
+  Clock,
+  Plus
 } from "lucide-react";
 import {
   AlertDialog,
@@ -77,13 +78,13 @@ export function VendorList({ onEdit }: VendorListProps) {
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState("");
   const [deleteVendorId, setDeleteVendorId] = useState<number | null>(null);
-  
+
   const { data: vendors = [], isLoading } = useQuery({
     queryKey: ['/api/vendors'],
   });
-  
+
   const vendorToDelete = vendors.find(v => v.id === deleteVendorId);
-  
+
   const filteredVendors = searchTerm 
     ? vendors.filter((vendor: Vendor) => 
         vendor.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -91,18 +92,18 @@ export function VendorList({ onEdit }: VendorListProps) {
         vendor.email.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : vendors;
-  
+
   const handleDelete = async () => {
     if (!deleteVendorId) return;
-    
+
     try {
       await apiRequest("DELETE", `/api/vendors/${deleteVendorId}`);
-      
+
       toast({
         title: "Vendor deleted",
         description: "The vendor has been successfully deleted.",
       });
-      
+
       queryClient.invalidateQueries({ queryKey: ['/api/vendors'] });
       setDeleteVendorId(null);
     } catch (error) {
@@ -113,7 +114,7 @@ export function VendorList({ onEdit }: VendorListProps) {
       });
     }
   };
-  
+
   if (isLoading) {
     return (
       <Card>
@@ -133,108 +134,112 @@ export function VendorList({ onEdit }: VendorListProps) {
       </Card>
     );
   }
-  
+
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Vendors</CardTitle>
+        <Button onClick={() => onEdit(null)}>
+          <Plus className="mr-2 h-4 w-4" /> Add Vendor
+        </Button>
       </CardHeader>
       <CardContent>
-        <div className="mb-4">
-          <Input
-            placeholder="Search vendors..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="max-w-sm"
-          />
-        </div>
-        
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Contact Person</TableHead>
-                <TableHead>Contact</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="w-[70px]">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredVendors.length === 0 ? (
+        <div className="space-y-4">
+          <div className="flex items-center">
+            <Input
+              placeholder="Search vendors..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="max-w-sm"
+            />
+          </div>
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
                 <TableRow>
-                  <TableCell colSpan={5} className="h-24 text-center">
-                    No vendors found.
-                  </TableCell>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Contact Person</TableHead>
+                  <TableHead>Contact</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="w-[70px]">Actions</TableHead>
                 </TableRow>
-              ) : (
-                filteredVendors.map((vendor: Vendor) => (
-                  <TableRow key={vendor.id}>
-                    <TableCell className="font-medium">{vendor.name}</TableCell>
-                    <TableCell>{vendor.contactPerson}</TableCell>
-                    <TableCell>
-                      <div>{vendor.email}</div>
-                      <div className="text-sm text-muted-foreground">{vendor.phone}</div>
-                    </TableCell>
-                    <TableCell>
-                      <VendorStatusBadge status={vendor.status} />
-                    </TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem onClick={() => onEdit(vendor)}>
-                            <Pencil className="mr-2 h-4 w-4" />
-                            Edit
-                          </DropdownMenuItem>
-                          <DropdownMenuItem 
-                            onClick={() => setDeleteVendorId(vendor.id)}
-                            className="text-red-600"
-                          >
-                            <Trash className="mr-2 h-4 w-4" />
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+              </TableHeader>
+              <TableBody>
+                {filteredVendors.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={5} className="h-24 text-center">
+                      No vendors found.
                     </TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                ) : (
+                  filteredVendors.map((vendor: Vendor) => (
+                    <TableRow key={vendor.id}>
+                      <TableCell className="font-medium">{vendor.name}</TableCell>
+                      <TableCell>{vendor.contactPerson}</TableCell>
+                      <TableCell>
+                        <div>{vendor.email}</div>
+                        <div className="text-sm text-muted-foreground">{vendor.phone}</div>
+                      </TableCell>
+                      <TableCell>
+                        <VendorStatusBadge status={vendor.status} />
+                      </TableCell>
+                      <TableCell>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                              <span className="sr-only">Open menu</span>
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={() => onEdit(vendor)}>
+                              <Pencil className="mr-2 h-4 w-4" />
+                              Edit
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              onClick={() => setDeleteVendorId(vendor.id)}
+                              className="text-red-600"
+                            >
+                              <Trash className="mr-2 h-4 w-4" />
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
+
+          {/* Delete Confirmation Dialog */}
+          <AlertDialog 
+            open={deleteVendorId !== null} 
+            onOpenChange={(open) => !open && setDeleteVendorId(null)}
+          >
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will permanently delete the vendor "{vendorToDelete?.name}". 
+                  This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction 
+                  onClick={handleDelete}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
-        
-        {/* Delete Confirmation Dialog */}
-        <AlertDialog 
-          open={deleteVendorId !== null} 
-          onOpenChange={(open) => !open && setDeleteVendorId(null)}
-        >
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This will permanently delete the vendor "{vendorToDelete?.name}". 
-                This action cannot be undone.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction 
-                onClick={handleDelete}
-                className="bg-red-600 hover:bg-red-700"
-              >
-                Delete
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
       </CardContent>
     </Card>
   );

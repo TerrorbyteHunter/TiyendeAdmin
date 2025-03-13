@@ -16,6 +16,7 @@ import { Header } from "@/components/shared/header";
 import { MobileSidebar } from "@/components/shared/mobile-sidebar";
 import { useState, useEffect } from "react";
 import { SessionTimeout } from "@/components/shared/session-timeout"; // Added import
+import Management from "@/pages/management"; // Added import
 
 function ProtectedRoute({ component: Component, ...rest }: { component: React.ComponentType<any>, [key: string]: any }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -81,6 +82,9 @@ function Router() {
       </Route>
       <Route path="/analytics">
         <ProtectedRoute component={Analytics} />
+      </Route>
+      <Route path="/management">
+        <ProtectedRoute component={Management} />
       </Route>
       <Route path="/settings">
         <ProtectedRoute component={Settings} />
