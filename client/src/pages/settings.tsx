@@ -6,37 +6,54 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 
+// Placeholder for BackupManager component
+const BackupManager = () => {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Backup Manager</CardTitle>
+        <CardDescription>Manage database backups</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {/* Placeholder for backup management UI */}
+        <p>Backup functionality not yet implemented.</p>
+      </CardContent>
+    </Card>
+  );
+};
+
+
 export default function Settings() {
   const { toast } = useToast();
   const [automaticBackups, setAutomaticBackups] = useState(true);
   const [activityLogging, setActivityLogging] = useState(true);
   const [emailNotifications, setEmailNotifications] = useState(true);
-  
+
   const toggleFeature = (feature: string, enabled: boolean) => {
     toast({
       title: `${feature} ${enabled ? 'enabled' : 'disabled'}`,
       description: `${feature} has been ${enabled ? 'enabled' : 'disabled'} successfully.`,
     });
   };
-  
+
   return (
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-semibold text-gray-800">System Settings</h2>
         <p className="mt-1 text-sm text-gray-500">Configure system-wide settings and preferences.</p>
       </div>
-      
+
       <Tabs defaultValue="general">
         <TabsList>
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
           <TabsTrigger value="advanced">Advanced</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="general" className="space-y-6 mt-6">
           <SystemSettings />
         </TabsContent>
-        
+
         <TabsContent value="security" className="space-y-6 mt-6">
           <Card>
             <CardHeader>
@@ -65,7 +82,7 @@ export default function Settings() {
                   }
                 />
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <Label htmlFor="activity-logging">Activity Logging</Label>
@@ -82,7 +99,7 @@ export default function Settings() {
                   }}
                 />
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <Label htmlFor="session-timeout">Session Timeout (minutes)</Label>
@@ -110,7 +127,7 @@ export default function Settings() {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="advanced" className="space-y-6 mt-6">
           <Card>
             <CardHeader>
@@ -136,7 +153,7 @@ export default function Settings() {
                   }}
                 />
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
                   <Label htmlFor="email-notifications">Email Notifications</Label>
@@ -153,7 +170,7 @@ export default function Settings() {
                   }}
                 />
               </div>
-              
+
               <div className="pt-4">
                 <button 
                   className="bg-red-100 text-red-800 px-4 py-2 rounded-md text-sm font-medium"
@@ -170,6 +187,7 @@ export default function Settings() {
               </div>
             </CardContent>
           </Card>
+          <BackupManager />
         </TabsContent>
       </Tabs>
     </div>

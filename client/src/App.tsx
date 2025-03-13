@@ -15,21 +15,22 @@ import { Sidebar } from "@/components/shared/sidebar";
 import { Header } from "@/components/shared/header";
 import { MobileSidebar } from "@/components/shared/mobile-sidebar";
 import { useState, useEffect } from "react";
+import { SessionTimeout } from "@/components/shared/session-timeout"; // Added import
 
 function ProtectedRoute({ component: Component, ...rest }: { component: React.ComponentType<any>, [key: string]: any }) {
   const { isAuthenticated, isLoading } = useAuth();
   const [, navigate] = useLocation();
-  
+
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       navigate("/login");
     }
   }, [isAuthenticated, isLoading, navigate]);
-  
+
   if (isLoading) {
     return <div className="flex items-center justify-center h-screen">Loading...</div>;
   }
-  
+
   return isAuthenticated ? <Component {...rest} /> : null;
 }
 
@@ -37,11 +38,11 @@ function AppLayout({ children }: { children: React.ReactNode }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isAuthenticated } = useAuth();
   const [location] = useLocation();
-  
+
   if (!isAuthenticated || location === "/login" || location === "/auth") {
     return <>{children}</>;
   }
-  
+
   return (
     <div className="bg-gray-50 h-screen flex overflow-hidden">
       <Sidebar />
@@ -49,11 +50,12 @@ function AppLayout({ children }: { children: React.ReactNode }) {
         isOpen={isMobileMenuOpen} 
         onClose={() => setIsMobileMenuOpen(false)} 
       />
-      
+
       <main className="flex-1 flex flex-col h-full overflow-hidden">
         <Header onMenuClick={() => setIsMobileMenuOpen(true)} />
         <div className="flex-1 overflow-y-auto bg-gray-50 p-6 custom-scrollbar">
           {children}
+          <SessionTimeout /> {/* Added SessionTimeout component */}
         </div>
       </main>
     </div>

@@ -38,115 +38,116 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const isAuthenticated = !!user;
-  
-  // Check if user is already authenticated on component mount
-  useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    
-    if (token) {
-      const userData = localStorage.getItem("userData");
-      
-      if (userData) {
-        try {
-          setUser(JSON.parse(userData));
-        } catch (error) {
-          console.error("Failed to parse user data:", error);
-          localStorage.removeItem("authToken");
-          localStorage.removeItem("userData");
-        }
-      }
+
+  const getTokenFromStorage = (): string | null => localStorage.getItem("authToken");
+  const getUserFromStorage = (): User | null => {
+    const userData = localStorage.getItem("userData");
+    try {
+      return userData ? JSON.parse(userData) : null;
+    } catch (error) {
+      console.error("Failed to parse user data:", error);
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("userData");
+      return null;
     }
-    
+  };
+
+  const refreshToken = async () => {
+    const token = getTokenFromStorage();
+    if (!token) return;
+
+    try {
+      const response = await fetch('/api/refresh-token', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
+        credentials: "include"
+      });
+
+      if (!response.ok) {
+        throw new Error(`Refresh token failed: ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (data.token) {
+        localStorage.setItem('authToken', data.token);
+      }
+    } catch (error) {
+      console.error('Token refresh failed, logging out:', error);
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("userData");
+      setUser(null);
+      queryClient.clear();
+    }
+  };
+
+  useEffect(() => {
+    const storedUser = getUserFromStorage();
+    setUser(storedUser);
     setIsLoading(false);
+
+    const tokenRefreshInterval = setInterval(refreshToken, 15 * 60 * 1000); // 15 minutes
+
+    return () => clearInterval(tokenRefreshInterval);
   }, []);
-  
-  // Set auth token on all requests
+
   useEffect(() => {
     const requestInterceptor = (config: RequestInit) => {
-      const token = localStorage.getItem("authToken");
-      
+      const token = getTokenFromStorage();
       if (token) {
         config.headers = {
           ...config.headers,
           Authorization: `Bearer ${token}`,
         };
       }
-      
       return config;
     };
-    
-    // Add interceptor here if using a more complex fetch setup
-    
-    return () => {
-      // Remove interceptor here if needed
-    };
+
+    //This is a placeholder.  A real implementation would depend on your fetch setup.
+    return () => {};
   }, []);
-  
+
+
   const login = async (data: LoginData) => {
     try {
-      console.log("Sending login request with data:", data);
-      
       const response = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
         credentials: "include"
       });
-      
-      console.log("Login response status:", response.status);
-      
+
       if (!response.ok) {
         const errorText = await response.text();
-        console.error("Login error text:", errorText);
         throw new Error(errorText || "Failed to log in");
       }
-      
-      // Safely parse JSON
-      let result;
-      try {
-        const text = await response.text();
-        result = JSON.parse(text);
-        console.log("Login response:", result);
-      } catch (parseError) {
-        console.error("JSON parse error:", parseError);
-        throw new Error("Invalid response format from server");
-      }
-      
-      // Store token and user data
+
+      const result = await response.json();
       localStorage.setItem("authToken", result.token);
       localStorage.setItem("userData", JSON.stringify(result.user));
-      
       setUser(result.user);
-      
-      // Reset any cached queries
       queryClient.clear();
-      
       return result;
     } catch (error) {
-      console.error("Login API error:", error);
       throw error;
     }
   };
-  
+
   const logout = async () => {
     try {
-      // Call logout endpoint to invalidate token on server
       await apiRequest("POST", "/api/logout", {});
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
-      // Even if server request fails, clear local state
       localStorage.removeItem("authToken");
       localStorage.removeItem("userData");
       setUser(null);
-      
-      // Reset any cached queries
       queryClient.clear();
     }
   };
-  
+
   const value = {
     user,
     isAuthenticated,
@@ -154,7 +155,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     login,
     logout
   };
-  
+
   return (
     <AuthContext.Provider value={value}>
       {children}
