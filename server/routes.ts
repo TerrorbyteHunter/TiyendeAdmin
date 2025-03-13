@@ -48,14 +48,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Handle validation errors
   const handleValidationError = (err: unknown) => {
+    console.error("Validation error:", err);
     if (err instanceof ZodError) {
-      return fromZodError(err).message;
+      const validationError = fromZodError(err);
+      console.error("Zod validation error details:", validationError);
+      return validationError.message;
     }
-    return "Validation error";
+    return err instanceof Error ? err.message : "Validation error";
   };
   
   // Auth routes
-  app.post(`${api}/auth/login`, async (req, res) => {
+  app.post(`${api}/login`, async (req, res) => {
     try {
       console.log("Login request received. Body:", req.body);
       
@@ -117,7 +120,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  app.post(`${api}/auth/logout`, authenticateToken, async (req, res) => {
+  app.post(`${api}/logout`, authenticateToken, async (req, res) => {
     const userId = (req as any).user.id;
     
     // Clear token
