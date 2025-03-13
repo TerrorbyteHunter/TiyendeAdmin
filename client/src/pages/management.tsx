@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useLocation, useSearchParams } from "wouter";
+import { useLocation } from "wouter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,15 @@ import type { User, Vendor } from "@shared/schema";
 
 export default function Management() {
   const [location, setLocation] = useLocation();
-  const [searchParams] = useSearchParams();
+  
+  // Parse search params manually from location
+  const getSearchParams = () => {
+    const parts = location.split('?');
+    if (parts.length <= 1) return new URLSearchParams();
+    return new URLSearchParams(parts[1]);
+  };
+  
+  const searchParams = getSearchParams();
   const tabFromUrl = searchParams.get('tab') as "users" | "vendors" | null;
   const [activeTab, setActiveTab] = useState<"users" | "vendors">(tabFromUrl || "users");
 
@@ -49,7 +57,7 @@ export default function Management() {
 
   const handleTabChange = (value: "users" | "vendors") => {
     setActiveTab(value);
-    const params = new URLSearchParams(searchParams.toString() || '');
+    const params = getSearchParams();
     params.set('tab', value);
     setLocation(`/management?${params.toString()}`);
   };

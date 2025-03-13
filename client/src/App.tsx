@@ -20,13 +20,13 @@ import Management from "@/pages/management"; // Added import
 
 function ProtectedRoute({ component: Component, ...rest }: { component: React.ComponentType<any>, [key: string]: any }) {
   const { isAuthenticated, isLoading } = useAuth();
-  const [, navigate] = useLocation();
+  const [, setLocation] = useLocation();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      navigate("/login");
+      setLocation("/login");
     }
-  }, [isAuthenticated, isLoading, navigate]);
+  }, [isAuthenticated, isLoading, setLocation]);
 
   if (isLoading) {
     return <div className="flex items-center justify-center h-screen">Loading...</div>;
