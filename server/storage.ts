@@ -101,28 +101,89 @@ export class MemStorage implements IStorage {
   }
   
   private initializeSampleData() {
-    // Create sample vendors
+    // Create Zambian bus operators as vendors
     this.createVendor({
-      name: "Mazhandu Bus",
+      name: "Mazhandu Family Bus Services",
       contactPerson: "John Mazhandu",
-      email: "info@mazhandubus.com",
+      email: "info@mazhandufamily.com",
       phone: "+260 97 1234567",
-      address: "Lusaka, Zambia",
+      address: "Intercity Bus Terminal, Lusaka, Zambia",
       status: "active",
       logo: ""
     });
     
     this.createVendor({
-      name: "Power Tools Bus",
+      name: "Power Tools Bus Services",
       contactPerson: "Maria Daka",
       email: "info@powertoolsbus.com",
       phone: "+260 96 7654321",
-      address: "Kitwe, Zambia",
+      address: "Intercity Bus Terminal, Lusaka, Zambia",
       status: "active",
       logo: ""
     });
     
-    // Create sample routes
+    this.createVendor({
+      name: "Shalom Bus Services",
+      contactPerson: "David Banda",
+      email: "info@shalombus.com",
+      phone: "+260 97 8765432",
+      address: "Intercity Bus Terminal, Lusaka, Zambia",
+      status: "active",
+      logo: ""
+    });
+    
+    this.createVendor({
+      name: "Juldan Motors",
+      contactPerson: "Julian Mwanza",
+      email: "info@juldanmotors.com",
+      phone: "+260 95 1234567",
+      address: "Intercity Bus Terminal, Lusaka, Zambia",
+      status: "active",
+      logo: ""
+    });
+    
+    this.createVendor({
+      name: "Euro Africa Bus Services",
+      contactPerson: "Samuel Mulenga",
+      email: "info@euroafrica.com",
+      phone: "+260 96 8765432",
+      address: "Intercity Bus Terminal, Lusaka, Zambia",
+      status: "active",
+      logo: ""
+    });
+    
+    this.createVendor({
+      name: "Kobs Bus Services",
+      contactPerson: "Kenneth Chanda",
+      email: "info@kobsbus.com",
+      phone: "+260 97 5678901",
+      address: "Intercity Bus Terminal, Lusaka, Zambia",
+      status: "active",
+      logo: ""
+    });
+    
+    this.createVendor({
+      name: "CR Carriers",
+      contactPerson: "Charles Mumba",
+      email: "info@crcarriers.com",
+      phone: "+260 96 5432109",
+      address: "Intercity Bus Terminal, Lusaka, Zambia",
+      status: "active",
+      logo: ""
+    });
+    
+    this.createVendor({
+      name: "Wada Chovu Transport",
+      contactPerson: "Watson Chovu",
+      email: "info@wadachovu.com",
+      phone: "+260 95 8765432",
+      address: "Intercity Bus Terminal, Lusaka, Zambia",
+      status: "active",
+      logo: ""
+    });
+    
+    // Create common Zambian bus routes
+    // Mazhandu Family routes
     this.createRoute({
       vendorId: 1,
       departure: "Lusaka",
@@ -136,15 +197,178 @@ export class MemStorage implements IStorage {
     });
     
     this.createRoute({
-      vendorId: 2,
+      vendorId: 1,
       departure: "Lusaka",
       destination: "Ndola",
       departureTime: "07:30",
-      estimatedArrival: "12:30",
+      estimatedArrival: "11:30",
       fare: 200,
       capacity: 44,
       status: "active",
       daysOfWeek: ["Monday", "Tuesday", "Thursday", "Saturday"]
+    });
+    
+    this.createRoute({
+      vendorId: 1,
+      departure: "Lusaka",
+      destination: "Chipata",
+      departureTime: "06:00",
+      estimatedArrival: "14:00",
+      fare: 280,
+      capacity: 44,
+      status: "active",
+      daysOfWeek: ["Monday", "Wednesday", "Friday"]
+    });
+    
+    // Power Tools routes
+    this.createRoute({
+      vendorId: 2,
+      departure: "Lusaka",
+      destination: "Kitwe",
+      departureTime: "07:00",
+      estimatedArrival: "13:00",
+      fare: 220,
+      capacity: 44,
+      status: "active",
+      daysOfWeek: ["Monday", "Tuesday", "Thursday", "Saturday", "Sunday"]
+    });
+    
+    this.createRoute({
+      vendorId: 2,
+      departure: "Lusaka",
+      destination: "Solwezi",
+      departureTime: "06:30",
+      estimatedArrival: "16:30",
+      fare: 320,
+      capacity: 44,
+      status: "active",
+      daysOfWeek: ["Tuesday", "Thursday", "Sunday"]
+    });
+    
+    // Shalom Bus routes
+    this.createRoute({
+      vendorId: 3,
+      departure: "Lusaka",
+      destination: "Nakonde",
+      departureTime: "05:00",
+      estimatedArrival: "17:00",
+      fare: 380,
+      capacity: 44,
+      status: "active",
+      daysOfWeek: ["Monday", "Friday"]
+    });
+    
+    this.createRoute({
+      vendorId: 3,
+      departure: "Lusaka",
+      destination: "Mongu",
+      departureTime: "06:00",
+      estimatedArrival: "15:00",
+      fare: 280,
+      capacity: 44,
+      status: "active",
+      daysOfWeek: ["Wednesday", "Saturday"]
+    });
+    
+    // Juldan Motors routes
+    this.createRoute({
+      vendorId: 4,
+      departure: "Lusaka",
+      destination: "Kabwe",
+      departureTime: "09:00",
+      estimatedArrival: "11:30",
+      fare: 120,
+      capacity: 44,
+      status: "active",
+      daysOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    });
+    
+    this.createRoute({
+      vendorId: 4,
+      departure: "Lusaka",
+      destination: "Mazabuka",
+      departureTime: "10:00",
+      estimatedArrival: "12:30",
+      fare: 150,
+      capacity: 44,
+      status: "active",
+      daysOfWeek: ["Monday", "Wednesday", "Friday", "Sunday"]
+    });
+    
+    // Euro Africa routes
+    this.createRoute({
+      vendorId: 5,
+      departure: "Lusaka",
+      destination: "Johannesburg",
+      departureTime: "14:00",
+      estimatedArrival: "10:00", // Next day
+      fare: 850,
+      capacity: 44,
+      status: "active",
+      daysOfWeek: ["Tuesday", "Saturday"]
+    });
+    
+    this.createRoute({
+      vendorId: 5,
+      departure: "Lusaka",
+      destination: "Harare",
+      departureTime: "07:00",
+      estimatedArrival: "17:00",
+      fare: 400,
+      capacity: 44,
+      status: "active",
+      daysOfWeek: ["Monday", "Thursday"]
+    });
+    
+    // Kobs Bus routes
+    this.createRoute({
+      vendorId: 6,
+      departure: "Lusaka",
+      destination: "Kasama",
+      departureTime: "06:00",
+      estimatedArrival: "16:00",
+      fare: 320,
+      capacity: 44,
+      status: "active",
+      daysOfWeek: ["Tuesday", "Friday", "Sunday"]
+    });
+    
+    this.createRoute({
+      vendorId: 6,
+      departure: "Ndola",
+      destination: "Lusaka",
+      departureTime: "08:00",
+      estimatedArrival: "12:00",
+      fare: 200,
+      capacity: 44,
+      status: "active",
+      daysOfWeek: ["Monday", "Wednesday", "Friday", "Sunday"]
+    });
+    
+    // CR Carriers routes
+    this.createRoute({
+      vendorId: 7,
+      departure: "Lusaka",
+      destination: "Choma",
+      departureTime: "09:30",
+      estimatedArrival: "14:30",
+      fare: 220,
+      capacity: 44,
+      status: "active",
+      daysOfWeek: ["Monday", "Wednesday", "Saturday"]
+    });
+    
+    // Wada Chovu routes
+    this.createRoute({
+      vendorId: 8,
+      departure: "Lusaka",
+      destination: "Mansa",
+      departureTime: "07:00",
+      estimatedArrival: "17:00",
+      fare: 350,
+      capacity: 44,
+      status: "active",
+      daysOfWeek: ["Tuesday", "Thursday", "Sunday"]
     });
     
     // Create sample settings
@@ -152,7 +376,7 @@ export class MemStorage implements IStorage {
     this.updateSetting("contact_email", "support@tiyende.com");
     this.updateSetting("contact_phone", "+260 97 1234567");
 
-    // Create some sample tickets
+    // Create sample tickets
     this.createTicket({
       bookingReference: "TIY-8294",
       routeId: 1,
@@ -181,18 +405,156 @@ export class MemStorage implements IStorage {
       paymentMethod: "mobile_money",
       travelDate: new Date("2023-06-16")
     });
+    
+    // Add more tickets for various routes
+    this.createTicket({
+      bookingReference: "TIY-8292",
+      routeId: 3,
+      vendorId: 1,
+      customerName: "Chanda Mulenga",
+      customerPhone: "+260 95 9876543",
+      customerEmail: "chanda@example.com",
+      seatNumber: 8,
+      status: "paid",
+      amount: 280,
+      paymentMethod: "mobile_money",
+      paymentReference: "PAY789012",
+      travelDate: new Date("2023-06-17")
+    });
+    
+    this.createTicket({
+      bookingReference: "TIY-8291",
+      routeId: 4,
+      vendorId: 2,
+      customerName: "Bwalya Mutale",
+      customerPhone: "+260 96 8765432",
+      customerEmail: "bwalya@example.com",
+      seatNumber: 15,
+      status: "paid",
+      amount: 220,
+      paymentMethod: "cash",
+      paymentReference: "CASH001",
+      travelDate: new Date("2023-06-18")
+    });
+    
+    this.createTicket({
+      bookingReference: "TIY-8290",
+      routeId: 6,
+      vendorId: 3,
+      customerName: "Mwamba Chilufya",
+      customerPhone: "+260 97 6543210",
+      customerEmail: "mwamba@example.com",
+      seatNumber: 22,
+      status: "paid",
+      amount: 380,
+      paymentMethod: "mobile_money",
+      paymentReference: "PAY345678",
+      travelDate: new Date("2023-06-19")
+    });
+    
+    this.createTicket({
+      bookingReference: "TIY-8289",
+      routeId: 8,
+      vendorId: 4,
+      customerName: "Thandiwe Banda",
+      customerPhone: "+260 95 5432109",
+      customerEmail: "thandiwe@example.com",
+      seatNumber: 7,
+      status: "paid",
+      amount: 120,
+      paymentMethod: "mobile_money",
+      paymentReference: "PAY901234",
+      travelDate: new Date("2023-06-20")
+    });
+    
+    this.createTicket({
+      bookingReference: "TIY-8288",
+      routeId: 10,
+      vendorId: 5,
+      customerName: "Kabwe Musonda",
+      customerPhone: "+260 96 4321098",
+      customerEmail: "kabwe@example.com",
+      seatNumber: 34,
+      status: "pending",
+      amount: 850,
+      paymentMethod: "bank_transfer",
+      travelDate: new Date("2023-06-21")
+    });
+    
+    this.createTicket({
+      bookingReference: "TIY-8287",
+      routeId: 12,
+      vendorId: 6,
+      customerName: "Mumba Phiri",
+      customerPhone: "+260 97 3210987",
+      customerEmail: "mumba@example.com",
+      seatNumber: 19,
+      status: "paid",
+      amount: 320,
+      paymentMethod: "mobile_money",
+      paymentReference: "PAY567890",
+      travelDate: new Date("2023-06-22")
+    });
+    
+    this.createTicket({
+      bookingReference: "TIY-8286",
+      routeId: 14,
+      vendorId: 7,
+      customerName: "Nkandu Tembo",
+      customerPhone: "+260 95 2109876",
+      customerEmail: "nkandu@example.com",
+      seatNumber: 28,
+      status: "paid",
+      amount: 220,
+      paymentMethod: "mobile_money",
+      paymentReference: "PAY123789",
+      travelDate: new Date("2023-06-23")
+    });
+    
+    this.createTicket({
+      bookingReference: "TIY-8285",
+      routeId: 15,
+      vendorId: 8,
+      customerName: "Kasonde Mbewe",
+      customerPhone: "+260 96 1098765",
+      customerEmail: "kasonde@example.com",
+      seatNumber: 11,
+      status: "paid",
+      amount: 350,
+      paymentMethod: "credit_card",
+      paymentReference: "CC456789",
+      travelDate: new Date("2023-06-24")
+    });
 
     // Log some activities
     this.createActivity({
       userId: 1,
       action: "New vendor added",
-      details: { vendorName: "Zambia Royal Bus" }
+      details: { vendorName: "Shalom Bus Services" }
     });
 
     this.createActivity({
       userId: 1,
       action: "New route added",
-      details: { route: "Lusaka → Mongu" }
+      details: { route: "Lusaka → Livingstone" }
+    });
+    
+    this.createActivity({
+      userId: 1,
+      action: "New vendor added",
+      details: { vendorName: "Juldan Motors" }
+    });
+    
+    this.createActivity({
+      userId: 1,
+      action: "Ticket booked",
+      details: { reference: "TIY-8294", route: "Lusaka → Livingstone" }
+    });
+    
+    this.createActivity({
+      userId: 1,
+      action: "System setting updated",
+      details: { setting: "contact_email" }
     });
   }
   
