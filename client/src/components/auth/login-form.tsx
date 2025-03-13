@@ -34,9 +34,16 @@ export function LoginForm() {
     setIsLoading(true);
     setError(null);
     
+    // Log form errors if they exist
+    if (Object.keys(form.formState.errors).length > 0) {
+      console.error("Form validation errors:", form.formState.errors);
+    }
+    
     try {
       await login(data);
+      console.log("Login successful");
     } catch (err) {
+      console.error("Login error:", err);
       setError(err instanceof Error ? err.message : "Failed to log in");
     } finally {
       setIsLoading(false);

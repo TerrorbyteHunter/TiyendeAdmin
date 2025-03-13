@@ -86,8 +86,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
   
   const login = async (data: LoginData) => {
     try {
+      console.log("Sending login request with data:", data);
+      
       const response = await apiRequest("POST", "/api/auth/login", data);
+      console.log("Login response status:", response.status);
+      
       const result = await response.json();
+      console.log("Login response:", result);
       
       // Store token and user data
       localStorage.setItem("authToken", result.token);
@@ -100,6 +105,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       
       return result;
     } catch (error) {
+      console.error("Login API error:", error);
       throw error;
     }
   };
