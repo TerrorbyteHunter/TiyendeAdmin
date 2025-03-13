@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -91,7 +90,7 @@ export default function Tickets() {
             <TabsTrigger value="pending">Pending</TabsTrigger>
             <TabsTrigger value="cancelled">Cancelled</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="all" className="space-y-4 mt-4">
             {ticketsLoading ? (
               <div className="space-y-2">
@@ -103,7 +102,7 @@ export default function Tickets() {
               <TicketList tickets={tickets} />
             )}
           </TabsContent>
-          
+
           <TabsContent value="paid" className="space-y-4 mt-4">
             {ticketsLoading ? (
               <div className="space-y-2">
@@ -113,7 +112,7 @@ export default function Tickets() {
               <TicketList tickets={tickets.filter((ticket: any) => ticket.status === 'paid')} />
             )}
           </TabsContent>
-          
+
           <TabsContent value="pending" className="space-y-4 mt-4">
             {ticketsLoading ? (
               <div className="space-y-2">
@@ -123,7 +122,7 @@ export default function Tickets() {
               <TicketList tickets={tickets.filter((ticket: any) => ticket.status === 'pending')} />
             )}
           </TabsContent>
-          
+
           <TabsContent value="cancelled" className="space-y-4 mt-4">
             {ticketsLoading ? (
               <div className="space-y-2">
