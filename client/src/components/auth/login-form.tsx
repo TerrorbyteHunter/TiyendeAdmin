@@ -16,11 +16,13 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useAuth } from "@/lib/auth.tsx";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useLocation } from "wouter";
 
 export function LoginForm() {
   const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [, setLocation] = useLocation();
   
   const form = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
@@ -42,6 +44,9 @@ export function LoginForm() {
     try {
       await login(data);
       console.log("Login successful");
+      
+      // Redirect to dashboard after successful login
+      setLocation("/");
     } catch (err) {
       console.error("Login error:", err);
       setError(err instanceof Error ? err.message : "Failed to log in");

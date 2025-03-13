@@ -38,7 +38,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth();
   const [location] = useLocation();
   
-  if (!isAuthenticated || location === "/login") {
+  if (!isAuthenticated || location === "/login" || location === "/auth") {
     return <>{children}</>;
   }
   
@@ -64,6 +64,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/login" component={Login} />
+      <Route path="/auth" component={Login} />
       <Route path="/">
         <ProtectedRoute component={Dashboard} />
       </Route>
