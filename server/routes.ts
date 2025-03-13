@@ -57,9 +57,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth routes
   app.post(`${api}/auth/login`, async (req, res) => {
     try {
+      console.log("Login request received. Body:", req.body);
+      
       // Looser validation for testing purposes
       // Get username and password from request body
-      const { username, password } = req.body;
+      const { username, password } = req.body || {};
+      console.log("Extracted credentials:", { username, password });
       
       // For testing: allow any username/password if provided
       if (!username || !password) {
