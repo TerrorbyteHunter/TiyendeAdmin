@@ -11,22 +11,22 @@ import { useState } from 'react';
 
 export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState('');
-  
+
   const { data: dashboardData, isLoading } = useQuery({
     queryKey: ['/api/dashboard'],
   });
-  
+
   const handleGenerateReport = () => {
     // In a real implementation, this would generate and download a report
     alert('Report generation would be implemented here');
   };
-  
+
   return (
     <div>
       <div className="mb-8">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-semibold text-gray-800">Dashboard Overview</h2>
+            <h2 className="text-2xl font-bold text-gray-800 text-center w-full">Dashboard Overview</h2>
             <p className="mt-1 text-sm text-gray-500">Welcome back! Here's what's happening with Tiyende today.</p>
           </div>
           <div className="mt-4 md:mt-0 flex space-x-3">
