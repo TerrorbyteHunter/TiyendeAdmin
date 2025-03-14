@@ -1,0 +1,31 @@
+[vite] connecting...
+[vite] connected.
+`TabsContent` must be used within `Tabs`
+`TabsContent` must be used within `Tabs`
+`TabsContent` must be used within `Tabs`
+`TabsContent` must be used within `Tabs`
+`TabsContent` must be used within `Tabs`
+`TabsContent` must be used within `Tabs`
+`TabsContent` must be used within `Tabs`
+`TabsContent` must be used within `Tabs`
+The above error occurred in the <TabsContent> component:
+
+    at https://1d8d15eb-80e8-4b12-88d6-8a1c2c664cf0-00-3abj8vgumjzi2.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tabs.js?v=c189a025:173:13
+    at _c5 (https://1d8d15eb-80e8-4b12-88d6-8a1c2c664cf0-00-3abj8vgumjzi2.kirk.replit.dev/src/components/ui/tabs.tsx:72:12)
+    at div
+    at Analytics (https://1d8d15eb-80e8-4b12-88d6-8a1c2c664cf0-00-3abj8vgumjzi2.kirk.replit.dev/src/pages/analytics.tsx:34:31)
+    at ProtectedRoute (https://1d8d15eb-80e8-4b12-88d6-8a1c2c664cf0-00-3abj8vgumjzi2.kirk.replit.dev/src/App.tsx?v=krkgK2ciuqQWLug3T95sa:38:38)
+    at Route (https://1d8d15eb-80e8-4b12-88d6-8a1c2c664cf0-00-3abj8vgumjzi2.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=2bd74da2:323:16)
+    at Switch (https://1d8d15eb-80e8-4b12-88d6-8a1c2c664cf0-00-3abj8vgumjzi2.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=2bd74da2:379:17)
+    at Router
+    at div
+    at main
+    at div
+    at AppLayout (https://1d8d15eb-80e8-4b12-88d6-8a1c2c664cf0-00-3abj8vgumjzi2.kirk.replit.dev/src/App.tsx?v=krkgK2ciuqQWLug3T95sa:64:22)
+    at AuthProvider (https://1d8d15eb-80e8-4b12-88d6-8a1c2c664cf0-00-3abj8vgumjzi2.kirk.replit.dev/src/lib/auth.tsx:35:32)
+    at QueryClientProvider (https://1d8d15eb-80e8-4b12-88d6-8a1c2c664cf0-00-3abj8vgumjzi2.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=648aac03:2805:3)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+`TabsContent` must be used within `Tabs`
