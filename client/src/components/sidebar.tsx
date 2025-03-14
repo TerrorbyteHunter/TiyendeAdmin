@@ -2,7 +2,7 @@ import { Users, Home, BarChart2, Settings, ShoppingBag, TruckIcon, UserCircle } 
 
 const sidebarItems = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
-  { name: "Users", href: "/management?tab=users", icon: UserCircle },
+  { name: "Users", href: "/users", icon: UserCircle },
   { name: "Vendors", href: "/vendors", icon: TruckIcon },
   { name: "Analytics", href: "/analytics", icon: BarChart2 },
   { name: "Orders", href: "/orders", icon: ShoppingBag },

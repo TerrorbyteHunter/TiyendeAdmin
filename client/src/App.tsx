@@ -85,9 +85,6 @@ function Router() {
       <Route path="/analytics">
         <ProtectedRoute component={Analytics} />
       </Route>
-      <Route path="/management">
-        <ProtectedRoute component={Management} />
-      </Route>
       <Route path="/users">
         <ProtectedRoute component={Users} />
       </Route> {/* Added Users route */}
