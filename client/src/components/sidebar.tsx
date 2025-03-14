@@ -9,15 +9,16 @@ import {
   Users,
   Truck as TruckIcon,
   Map,
-  CreditCard
+  CreditCard,
+  UserCircle
 } from "lucide-react";
 
 const sidebarItems = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
+  { name: "Users", href: "/users", icon: UserCircle },
   {
     name: "MANAGEMENT",
     items: [
-      { name: "Users", href: "/users", icon: Users },
       { name: "Vendors", href: "/vendors", icon: TruckIcon },
       { name: "Bus & Routes", href: "/routes", icon: Map },
       { name: "Tickets & Payments", href: "/tickets", icon: CreditCard },
