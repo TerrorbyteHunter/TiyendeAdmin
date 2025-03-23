@@ -7,7 +7,9 @@ import {
   Ticket, 
   BarChart3, 
   Settings, 
-  MapPin 
+  MapPin,
+  Building2,
+  UserCog
 } from "lucide-react";
 
 interface SidebarItemProps {
@@ -51,11 +53,18 @@ export function Sidebar() {
               Management
             </p>
             <SidebarItem 
+              href="/users" 
+              icon={<UserCog className="h-5 w-5" />} 
+              isActive={location === "/users"}
+            >
+              Users
+            </SidebarItem>
+            <SidebarItem 
               href="/vendors" 
-              icon={<Users className="h-5 w-5" />} 
+              icon={<Building2 className="h-5 w-5" />} 
               isActive={location === "/vendors"}
             >
-              Users & Vendors
+              Vendors
             </SidebarItem>
             <SidebarItem 
               href="/routes" 

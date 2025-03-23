@@ -101,6 +101,21 @@ export class MemStorage implements IStorage {
   }
   
   private initializeSampleData() {
+    // Initialize default admin user
+    const adminUser: User = {
+      id: 1,
+      username: 'admin',
+      password: 'admin123', // In production, this should be hashed
+      email: 'admin@tiyende.com',
+      fullName: 'System Administrator',
+      role: 'admin',
+      active: true,
+      lastLogin: null,
+      token: null
+    };
+    this.users.set(1, adminUser);
+    this.userId = 2; // Set next ID to 2 since we used 1 for admin
+
     // Create Zambian bus operators as vendors
     this.createVendor({
       name: "Mazhandu Family Bus Services",
